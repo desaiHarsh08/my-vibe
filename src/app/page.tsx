@@ -1,5 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { useTRPC } from "@/trpc/client";
 import { useMutation } from "@tanstack/react-query";
 // import { getQueryClient, trpc } from "@/trpc/server";
@@ -26,6 +27,7 @@ import React from "react";
 import { toast } from "sonner";
 
 export default function RootPage() {
+  const [value, setValue] = React.useState("");
   const trpc = useTRPC();
   const invoke = useMutation(
     trpc.invoke.mutationOptions({
@@ -37,10 +39,11 @@ export default function RootPage() {
 
   return (
     <div>
+      <Input value={value} onChange={(e) => setValue(e.target.value)} />
       Test
       <Button
         disabled={invoke.isPending}
-        onClick={() => invoke.mutate({ text: "John" })}
+        onClick={() => invoke.mutate({ value })}
       >
         invoke
       </Button>
